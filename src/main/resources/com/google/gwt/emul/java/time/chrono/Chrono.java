@@ -47,11 +47,12 @@ import java.time.calendrical.DateTimeValueRange;
 import java.time.format.TextStyle;
 import java.time.jdk8.Jdk7Methods;
 import java.time.zone.ZoneRules;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A calendar system, defining a set of human-scale date fields.
@@ -125,16 +126,16 @@ public abstract class Chrono<C extends Chrono<C>> implements Comparable<Chrono<?
   /**
    * Map of available calendars by ID.
    */
-  private static final ConcurrentHashMap<String, Chrono<?>> CHRONOS_BY_ID;
+  private static final Map<String, Chrono<?>> CHRONOS_BY_ID;
 
   /**
    * Map of available calendars by calendar type.
    */
-  private static final ConcurrentHashMap<String, Chrono<?>> CHRONOS_BY_TYPE;
+  private static final Map<String, Chrono<?>> CHRONOS_BY_TYPE;
   static {
     // TODO: defer initialization?
-    ConcurrentHashMap<String, Chrono<?>> ids = new ConcurrentHashMap<String, Chrono<?>>();
-    ConcurrentHashMap<String, Chrono<?>> types = new ConcurrentHashMap<String, Chrono<?>>();
+    Map<String, Chrono<?>> ids = new HashMap<String, Chrono<?>>();
+    Map<String, Chrono<?>> types = new HashMap<String, Chrono<?>>();
     CHRONOS_BY_ID = ids;
     CHRONOS_BY_TYPE = types;
   }
@@ -245,10 +246,10 @@ public abstract class Chrono<C extends Chrono<C>> implements Comparable<Chrono<?
   protected Chrono() {
 
     // register the subclass
-    CHRONOS_BY_ID.putIfAbsent(this.getId(), this);
+    CHRONOS_BY_ID.put(this.getId(), this);
     String type = this.getCalendarType();
     if (type != null) {
-      CHRONOS_BY_TYPE.putIfAbsent(type, this);
+      CHRONOS_BY_TYPE.put(type, this);
     }
   }
 

@@ -498,6 +498,18 @@ public final class LocalDateTime extends DefaultInterfaceChronoLocalDateTime<ISO
 
     return this.date;
   }
+  
+  /**
+   * Gets the {@code LocalDate} part of this date-time.
+   * <p>
+   * This returns a {@code LocalDate} with the same year, month and day as this date-time.
+   * 
+   * @return the date part of this date-time, not null
+   */
+  public LocalDate toLocalDate() {
+
+    return this.date;
+  }
 
   /**
    * Gets the year field.
@@ -598,6 +610,18 @@ public final class LocalDateTime extends DefaultInterfaceChronoLocalDateTime<ISO
     return this.time;
   }
 
+  /**
+   * Gets the {@code LocalTime} part of this date-time.
+   * <p>
+   * This returns a {@code LocalTime} with the same hour, minute, second and nanosecond as this date-time.
+   * 
+   * @return the time part of this date-time, not null
+   */
+  public LocalTime toLocalTime() {
+
+	    return this.time;
+  }
+  
   /**
    * Gets the hour-of-day field.
    * 

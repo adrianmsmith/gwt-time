@@ -43,9 +43,9 @@ import java.time.calendrical.DateTimeValueRange;
 import java.time.jdk8.Jdk7Methods;
 import java.time.zone.ZoneRules;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * A time-zone offset from Greenwich/UTC, such as {@code +02:00}.
@@ -78,12 +78,10 @@ public final class ZoneOffset extends ZoneId implements DateTimeAccessor, WithAd
     Serializable {
 
   /** Cache of time-zone offset by offset in seconds. */
-  private static final ConcurrentMap<Integer, ZoneOffset> SECONDS_CACHE = new ConcurrentHashMap<Integer, ZoneOffset>(
-      16, 0.75f, 4);
+  private static final Map<Integer, ZoneOffset> SECONDS_CACHE = new HashMap<Integer, ZoneOffset>();
 
   /** Cache of time-zone offset by ID. */
-  private static final ConcurrentMap<String, ZoneOffset> ID_CACHE = new ConcurrentHashMap<String, ZoneOffset>(16,
-      0.75f, 4);
+  private static final Map<String, ZoneOffset> ID_CACHE = new HashMap<String, ZoneOffset>();
 
   /**
    * The number of seconds per hour.
@@ -381,9 +379,9 @@ public final class ZoneOffset extends ZoneId implements DateTimeAccessor, WithAd
       ZoneOffset result = SECONDS_CACHE.get(totalSecs);
       if (result == null) {
         result = new ZoneOffset(totalSeconds);
-        SECONDS_CACHE.putIfAbsent(totalSecs, result);
+        SECONDS_CACHE.put(totalSecs, result);
         result = SECONDS_CACHE.get(totalSecs);
-        ID_CACHE.putIfAbsent(result.getId(), result);
+        ID_CACHE.put(result.getId(), result);
       }
       return result;
     } else {
