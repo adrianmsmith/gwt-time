@@ -185,10 +185,7 @@ public final class WeekDefinition implements Serializable {
   public static WeekDefinition of(Locale locale) {
 
     Jdk7Methods.Objects_requireNonNull(locale, "locale");
-    DayOfWeek dow = DayOfWeek.MONDAY;
-    if ("US".equals(locale.getCountry())) {
-      dow = DayOfWeek.SUNDAY;
-    }
+    DayOfWeek dow = DayOfWeek.SUNDAY;
     int minDays = 4; // ISO-08601 // gcal.getMinimalDaysInFirstWeek();
     return WeekDefinition.of(dow, minDays);
   }
