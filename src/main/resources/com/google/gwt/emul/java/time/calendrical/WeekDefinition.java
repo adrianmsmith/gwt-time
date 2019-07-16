@@ -37,7 +37,9 @@ import java.time.chrono.Chrono;
 import java.time.chrono.ChronoLocalDate;
 import java.time.jdk8.Jdk7Methods;
 import java.time.jdk8.Jdk8Methods;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -145,8 +147,7 @@ public final class WeekDefinition implements Serializable {
   /**
    * The cache of rules by locale.
    */
-  private static final ConcurrentMap<String, WeekDefinition> CACHE = new ConcurrentHashMap<String, WeekDefinition>(4,
-      0.75f, 2);
+  private static final Map<String, WeekDefinition> CACHE = new HashMap<String, WeekDefinition>();
 
   /**
    * The first day-of-week.
