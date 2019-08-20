@@ -97,6 +97,10 @@ import java.util.TimeZone;
  */
 public abstract class ZoneId {
 
+  protected native static String getJavascriptDefaultTimeZoneId() /*-{
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+  }-*/;
+  
   // -----------------------------------------------------------------------
   /**
    * Gets the system default time-zone.
@@ -110,9 +114,11 @@ public abstract class ZoneId {
    * @throws ZoneRulesException if the converted zone region ID cannot be found
    */
   public static ZoneId systemDefault() {
-
-    // return ZoneId.of(TimeZone.getDefault().getID(), OLD_IDS_POST_2005);
-    return ZoneOffset.UTC;
+    // This does not work on all browsers, see https://stackoverflow.com/a/34602679/220627
+    // But I figure it working on some browsers is better than always returning UTC which was
+    // the previous implementation
+    String z = getJavascriptDefaultTimeZoneId();
+    return z == null ? ZoneOffset.UTC : ZoneId.of(z);
   }
 
   // -----------------------------------------------------------------------
@@ -183,6 +189,8 @@ public abstract class ZoneId {
         return ZoneOffset.UTC;
       }
       return ZoneOffset.of(zoneId.substring(3));
+    } else if (zoneId.contains("/")) {
+      return new ZoneRegion(zoneId);
     }
     throw new DateTimeParseException("Illegal zoneId (GWT) " + zoneId, zoneId, 0);
   }
@@ -212,10 +220,6 @@ public abstract class ZoneId {
    * Constructor only accessible within the package.
    */
   ZoneId() {
-
-    if (getClass() != ZoneOffset.class) {
-      throw new AssertionError("Invalid subclass");
-    }
   }
 
   // -----------------------------------------------------------------------
